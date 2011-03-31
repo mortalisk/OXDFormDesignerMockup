@@ -1,7 +1,36 @@
-<Window title="Hello BXML!" maximized="true"
-    xmlns:bxml="http://pivot.apache.org/bxml"
-    xmlns="org.apache.pivot.wtk">
-    <Label text="%greeting"
-        styles="{font:'Arial bold 24', color:'#ff0000',
-            horizontalAlignment:'center', verticalAlignment:'center'}"/>
+<Window title="%title" maximized="true"
+	xmlns:bxml="http://pivot.apache.org/bxml"
+	xmlns="org.apache.pivot.wtk">
+	<SplitPane orientation="horizontal" splitRatio="0.2">
+		<left>
+			<Border styles="{padding:6}">
+				<ScrollPane horizontalScrollBarPolicy="fill">
+					<BoxPane orientation="vertical" styles="{fill:true, padding:{left:2, right:2}}">
+						<Expander bxml:id="studyExpander" title="%studiesHeading">
+							<!-- bxml:include src="study.bxml"/-->
+                		</Expander>
+                		<Expander bxml:id="usersExpander" title="%usersHeading" expanded="false">
+                    		<!--bxml:include src="users.bxml"/-->
+                		</Expander>
+                		<Expander bxml:id="rolesExpander" title="%rolesHeading" expanded="false">
+                			<!--bxml:include src="users.bxml"/-->
+                		</Expander>
+                		<Expander bxml:id="tasksExpander" title="%tasksHeading" expanded="false">
+                			<!--bxml:include src="tasks.bxml"/-->
+                		</Expander>
+                		<Expander bxml:id="settingsExpander" title="%settingsHeading" expanded="false">
+                			<!--bxml:include src="settings.bxml"/-->
+                		</Expander>
+                		<Expander bxml:id="reportsExpander" title="%reportsHeading" expanded="false">
+                			<!--bxml:include src="reports.bxml"/-->
+                		</Expander>
+            		</BoxPane>
+        		</ScrollPane>
+    		</Border>
+		</left>
+		<right>
+			<Label text="%greeting"	
+				styles="{font:'Arial bold 24', color:'#ff0000', horizontalAlignment:'center', verticalAlignment:'center'}"/>
+		</right>
+    </SplitPane>
 </Window>

@@ -1,3 +1,10 @@
 {
-	greeting: "Hello World!",
+	title: "OXD mForms Designer Prototype",
+	greeting: "Welcome to the form designer prototype",
+	studiesHeading: "Studies",
+	usersHeading: "Users",
+	rolesHeading: "Roles",
+	tasksHeading: "Tasks",
+	settingsHeading: "Settings",
+	reportsHeading: "Reports",
 }
