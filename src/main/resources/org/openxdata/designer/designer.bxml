@@ -1,25 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <Window title="%title" maximized="true"
 	xmlns:bxml="http://pivot.apache.org/bxml"
+	xmlns:content="org.apache.pivot.wtk.content"
 	xmlns:formtree="org.openxdata.designer.formtree"
 	xmlns="org.apache.pivot.wtk">
 	
 	<bxml:script src="dragdrop.js" />
 	
-	<SplitPane orientation="horizontal" splitRatio="0.6">
-		<left>
-			<Border styles="{color:10, padding:6}">
-				<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
-					<TreeView bxml:id="formTree" dropTarget="$formTreeDropTarget">
-						<nodeRenderer>
-							<formtree:NodeRenderer/>
-						</nodeRenderer>
-					</TreeView>
-        		</ScrollPane>
-    		</Border>
-		</left>
-		<right>
-			<Label text="%greeting"	
-				styles="{font:'Arial bold 24', color:'#ff0000', horizontalAlignment:'center', verticalAlignment:'center'}"/>
-		</right>
-    </SplitPane>
+	<TabPane bxml:id="tabPane">
+		<SplitPane orientation="horizontal" splitRatio="0.75">
+			<TabPane.tabData>
+				<content:ButtonData text="XForm" />
+			</TabPane.tabData>
+			<left>
+				<Border styles="{color:10, padding:6}">
+					<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+						<TreeView bxml:id="formTree" dropTarget="$formTreeDropTarget">
+							<nodeRenderer>
+								<formtree:NodeRenderer/>
+							</nodeRenderer>
+						</TreeView>
+	       			</ScrollPane>
+	   			</Border>
+			</left>
+			<right>
+				<Label text="%greeting"	
+					styles="{font:'Arial bold 24', color:'#ff0000', horizontalAlignment:'center', verticalAlignment:'center'}"/>
+			</right>
+		</SplitPane>
+	</TabPane>
 </Window>
