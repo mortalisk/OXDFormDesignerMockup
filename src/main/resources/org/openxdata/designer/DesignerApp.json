@@ -7,4 +7,6 @@
 	tasksHeading: "Tasks",
 	settingsHeading: "Settings",
 	reportsHeading: "Reports",
+	xformTab: "XForm",
+	designTab: "Design",
 }

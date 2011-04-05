@@ -10,7 +10,7 @@
 	<TabPane bxml:id="tabPane">
 		<SplitPane orientation="horizontal" splitRatio="0.75">
 			<TabPane.tabData>
-				<content:ButtonData text="XForm" />
+				<content:ButtonData text="%xformTab" />
 			</TabPane.tabData>
 			<left>
 				<Border styles="{color:10, padding:6}">
@@ -82,5 +82,13 @@
 				</CardPane>
 			</right>
 		</SplitPane>
+		<BoxPane>
+			<TabPane.tabData>
+				<content:ButtonData text="%designTab" />
+			</TabPane.tabData>
+			<Border styles="{color:10}">
+				<Label text="Put designer content here." />
+			</Border>
+		</BoxPane>
 	</TabPane>
 </Window>
