@@ -5,28 +5,36 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Locale;
 
 import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.BXMLSerializer;
 import org.apache.pivot.collections.ArrayList;
+import org.apache.pivot.collections.HashMap;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.io.FileList;
 import org.apache.pivot.util.Resources;
 import org.apache.pivot.wtk.Application;
+import org.apache.pivot.wtk.CardPane;
+import org.apache.pivot.wtk.Clipboard;
 import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.DropAction;
 import org.apache.pivot.wtk.HorizontalAlignment;
 import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.Manifest;
 import org.apache.pivot.wtk.Prompt;
+import org.apache.pivot.wtk.TableView;
+import org.apache.pivot.wtk.TextArea;
 import org.apache.pivot.wtk.Theme;
 import org.apache.pivot.wtk.TreeView;
 import org.apache.pivot.wtk.VerticalAlignment;
 import org.apache.pivot.wtk.Window;
 import org.apache.pivot.wtk.effects.OverlayDecorator;
 import org.apache.pivot.xml.Element;
+import org.apache.pivot.xml.Node;
+import org.apache.pivot.xml.TextNode;
 import org.apache.pivot.xml.XMLSerializer;
 
 /**
@@ -43,17 +51,32 @@ public class DesignerApp implements Application {
 	@BXML
 	private TreeView formTree;
 
+	@BXML
+	private CardPane propertiesCardPane;
+
+	@BXML
+	private TableView namespacesTableView;
+
+	@BXML
+	private TableView attributesTableView;
+
+	@BXML
+	private TextArea textArea;
+
 	private Window window;
-	
+
 	private OverlayDecorator promptDecorator = new OverlayDecorator();
+
+	private Locale locale;
+	private Resources resources;
 
 	public void startup(Display display, Map<String, String> properties)
 			throws Exception {
 
 		String language = properties.get(LANGUAGE_KEY);
-		Locale locale = (language == null) ? Locale.getDefault() : new Locale(
-				language);
-		Resources resources = new Resources(getClass().getName(), locale);
+		locale = (language == null) ? Locale.getDefault()
+				: new Locale(language);
+		resources = new Resources(getClass().getName(), locale);
 
 		Theme theme = Theme.getTheme();
 		Font font = theme.getFont();
@@ -93,6 +116,23 @@ public class DesignerApp implements Application {
 		window.open(display);
 	}
 
+	public void paste() {
+		Manifest clipboardContent = Clipboard.getContent();
+
+		if (clipboardContent != null && clipboardContent.containsText()) {
+			String xml = null;
+			XMLSerializer xmlSerializer = new XMLSerializer();
+			try {
+				xml = clipboardContent.getText();
+				setDocument(xmlSerializer.readObject(new StringReader(xml)));
+			} catch (Exception exception) {
+				Prompt.prompt(exception.getMessage(), window);
+			}
+
+			window.setTitle((String) resources.get("title"));
+		}
+	}
+
 	public DropAction drop(Manifest dragContent) {
 		DropAction dropAction = null;
 
@@ -116,7 +156,8 @@ public class DesignerApp implements Application {
 					Prompt.prompt(exception.getMessage(), window);
 				}
 
-				window.setTitle(file.getName());
+				window.setTitle((String) resources.get("title") + "-"
+						+ file.getName());
 
 				dropAction = DropAction.COPY;
 			} else {
@@ -145,6 +186,58 @@ public class DesignerApp implements Application {
 		formTree.setSelectedPath(path);
 	}
 
+	public void updateProperties() {
+		Node node = (Node) formTree.getSelectedNode();
+
+		if (node instanceof TextNode) {
+			TextNode textNode = (TextNode) node;
+			textArea.setText(textNode.getText());
+			propertiesCardPane.setSelectedIndex(1);
+		} else if (node instanceof Element) {
+			Element element = (Element) node;
+
+			// Populate the namespaces table
+			ArrayList<HashMap<String, String>> namespacesTableData = new ArrayList<HashMap<String, String>>();
+
+			String defaultNamespaceURI = element.getDefaultNamespaceURI();
+			if (defaultNamespaceURI != null) {
+				HashMap<String, String> row = new HashMap<String, String>();
+				row.put("prefix", "(default)");
+				row.put("uri", defaultNamespaceURI);
+				namespacesTableData.add(row);
+			}
+
+			Element.NamespaceDictionary namespaceDictionary = element
+					.getNamespaces();
+			for (String prefix : namespaceDictionary) {
+				HashMap<String, String> row = new HashMap<String, String>();
+				row.put("prefix", prefix);
+				row.put("uri", namespaceDictionary.get(prefix));
+				namespacesTableData.add(row);
+			}
+
+			namespacesTableView.setTableData(namespacesTableData);
+
+			// Populate the attributes table
+			ArrayList<HashMap<String, String>> attributesTableData = new ArrayList<HashMap<String, String>>();
+
+			for (Element.Attribute attribute : element.getAttributes()) {
+				HashMap<String, String> row = new HashMap<String, String>();
+
+				String attributeName = attribute.getName();
+				row.put("name", attributeName);
+				row.put("value", element.get(attributeName));
+				attributesTableData.add(row);
+			}
+
+			attributesTableView.setTableData(attributesTableData);
+
+			propertiesCardPane.setSelectedIndex(0);
+		} else {
+			throw new IllegalStateException();
+		}
+	}
+
 	public boolean shutdown(boolean optional) throws Exception {
 
 		if (window != null)
@@ -160,5 +253,4 @@ public class DesignerApp implements Application {
 	public void resume() throws Exception {
 		// TODO Auto-generated method stub
 	}
-
 }
