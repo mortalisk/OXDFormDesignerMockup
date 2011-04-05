@@ -1,30 +1,19 @@
 <Window title="%title" maximized="true"
 	xmlns:bxml="http://pivot.apache.org/bxml"
+	xmlns:formtree="org.openxdata.designer.formtree"
 	xmlns="org.apache.pivot.wtk">
-	<SplitPane orientation="horizontal" splitRatio="0.2">
+	
+	<bxml:script src="dragdrop.js" />
+	
+	<SplitPane orientation="horizontal" splitRatio="0.6">
 		<left>
-			<Border styles="{padding:6}">
-				<ScrollPane horizontalScrollBarPolicy="fill">
-					<BoxPane orientation="vertical" styles="{fill:true, padding:{left:2, right:2}}">
-						<Expander bxml:id="studyExpander" title="%studiesHeading">
-							<!-- bxml:include src="study.bxml"/-->
-                		</Expander>
-                		<Expander bxml:id="usersExpander" title="%usersHeading" expanded="false">
-                    		<!--bxml:include src="users.bxml"/-->
-                		</Expander>
-                		<Expander bxml:id="rolesExpander" title="%rolesHeading" expanded="false">
-                			<!--bxml:include src="users.bxml"/-->
-                		</Expander>
-                		<Expander bxml:id="tasksExpander" title="%tasksHeading" expanded="false">
-                			<!--bxml:include src="tasks.bxml"/-->
-                		</Expander>
-                		<Expander bxml:id="settingsExpander" title="%settingsHeading" expanded="false">
-                			<!--bxml:include src="settings.bxml"/-->
-                		</Expander>
-                		<Expander bxml:id="reportsExpander" title="%reportsHeading" expanded="false">
-                			<!--bxml:include src="reports.bxml"/-->
-                		</Expander>
-            		</BoxPane>
+			<Border styles="{color:10, padding:6}">
+				<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+					<TreeView bxml:id="formTree" dropTarget="$formTreeDropTarget">
+						<nodeRenderer>
+							<formtree:NodeRenderer/>
+						</nodeRenderer>
+					</TreeView>
         		</ScrollPane>
     		</Border>
 		</left>
