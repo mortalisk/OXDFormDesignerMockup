@@ -2,9 +2,13 @@ package org.openxdata.designer;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Locale;
 
@@ -15,6 +19,7 @@ import org.apache.pivot.collections.HashMap;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.collections.Sequence;
 import org.apache.pivot.io.FileList;
+import org.apache.pivot.serialization.SerializationException;
 import org.apache.pivot.util.Resources;
 import org.apache.pivot.wtk.Application;
 import org.apache.pivot.wtk.CardPane;
@@ -36,6 +41,9 @@ import org.apache.pivot.xml.Element;
 import org.apache.pivot.xml.Node;
 import org.apache.pivot.xml.TextNode;
 import org.apache.pivot.xml.XMLSerializer;
+import org.fcitmuk.epihandy.FormDef;
+import org.fcitmuk.epihandy.xform.EpihandyXform;
+import org.openxdata.designer.util.Form;
 
 /**
  * The main entry point of the form designer application.
@@ -50,6 +58,9 @@ public class DesignerApp implements Application {
 
 	@BXML
 	private TreeView formTree;
+
+	@BXML
+	private TreeView designTree;
 
 	@BXML
 	private CardPane propertiesCardPane;
@@ -112,6 +123,7 @@ public class DesignerApp implements Application {
 		prompt.getStyles().put("verticalAlignment", VerticalAlignment.CENTER);
 		promptDecorator.setOverlay(prompt);
 		formTree.getDecorators().add(promptDecorator);
+		designTree.getDecorators().add(promptDecorator);
 
 		window.open(display);
 	}
@@ -121,10 +133,11 @@ public class DesignerApp implements Application {
 
 		if (clipboardContent != null && clipboardContent.containsText()) {
 			String xml = null;
-			XMLSerializer xmlSerializer = new XMLSerializer();
 			try {
 				xml = clipboardContent.getText();
-				setDocument(xmlSerializer.readObject(new StringReader(xml)));
+				ByteArrayInputStream is = new ByteArrayInputStream(
+						xml.getBytes());
+				setDocument(is);
 			} catch (Exception exception) {
 				Prompt.prompt(exception.getMessage(), window);
 			}
@@ -141,12 +154,11 @@ public class DesignerApp implements Application {
 			if (fileList.getLength() == 1) {
 				File file = fileList.get(0);
 
-				XMLSerializer xmlSerializer = new XMLSerializer();
 				FileInputStream fileInputStream = null;
 				try {
 					try {
 						fileInputStream = new FileInputStream(file);
-						setDocument(xmlSerializer.readObject(fileInputStream));
+						setDocument(fileInputStream);
 					} finally {
 						if (fileInputStream != null) {
 							fileInputStream.close();
@@ -170,20 +182,47 @@ public class DesignerApp implements Application {
 		return dropAction;
 	}
 
-	private void setDocument(Element document) {
+	private void setDocument(InputStream documentStream) throws IOException,
+			SerializationException {
+
 		// Remove prompt decorator
 		if (promptDecorator != null) {
 			formTree.getDecorators().remove(promptDecorator);
+			designTree.getDecorators().remove(promptDecorator);
 			promptDecorator = null;
 		}
 
-		ArrayList<Element> treeData = new ArrayList<Element>();
-		treeData.add(document);
-		formTree.setTreeData(treeData);
+		// Slurp input stream into String so we can parse twice
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				documentStream));
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = br.readLine()) != null) {
+			sb.append(line);
+		}
+
+		XMLSerializer xs = new XMLSerializer();
+		Element document = (Element) xs.readObject(new StringReader(sb
+				.toString()));
+
+		ArrayList<Element> xmlData = new ArrayList<Element>();
+		xmlData.add(document);
+		formTree.setTreeData(xmlData);
 
 		Sequence.Tree.Path path = new Sequence.Tree.Path(0);
 		formTree.expandBranch(path);
 		formTree.setSelectedPath(path);
+
+		StringReader xmlReader = new StringReader(sb.toString());
+		FormDef formDef = EpihandyXform.fromXform2FormDef(xmlReader);
+		Form form = new Form(formDef);
+		ArrayList<Form> designData = new ArrayList<Form>();
+		designData.add(form);
+		designTree.setTreeData(designData);
+
+		path = new Sequence.Tree.Path(0);
+		designTree.expandBranch(path);
+		designTree.setSelectedPath(path);
 	}
 
 	public void updateProperties() {

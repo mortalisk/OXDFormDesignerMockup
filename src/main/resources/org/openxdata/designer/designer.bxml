@@ -3,6 +3,7 @@
 	xmlns:bxml="http://pivot.apache.org/bxml"
 	xmlns:content="org.apache.pivot.wtk.content"
 	xmlns:formtree="org.openxdata.designer.formtree"
+	xmlns:designtree="org.openxdata.designer.designtree"
 	xmlns="org.apache.pivot.wtk">
 	
 	<bxml:script src="dragdrop.js" />
@@ -82,13 +83,82 @@
 				</CardPane>
 			</right>
 		</SplitPane>
-		<BoxPane>
+		<SplitPane orientation="horizontal" splitRatio="0.75">
 			<TabPane.tabData>
 				<content:ButtonData text="%designTab" />
 			</TabPane.tabData>
-			<Border styles="{color:10}">
-				<Label text="Put designer content here." />
-			</Border>
-		</BoxPane>
+			<left>
+				<Border styles="{color:10, padding:6}">
+					<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+						<TreeView bxml:id="designTree" dropTarget="$formTreeDropTarget">
+									<nodeRenderer>
+										<designtree:NodeRenderer/>
+									</nodeRenderer>
+									<menuHandler>
+										<designtree:MenuHandler/>
+									</menuHandler>
+									<componentKeyListeners>
+										<![CDATA[
+										importPackage(org.apache.pivot.wtk);
+										function keyPressed(component, keyCode, keyLocation) {
+											if (keyCode == Keyboard.KeyCode.V && Keyboard.isPressed(Platform.getCommandModifier())) {
+												application.paste();
+											}
+										}
+										]]>
+									</componentKeyListeners>
+									<!--treeViewSelectionListeners>
+										<![CDATA[
+										function selectedPathsChanged(treeView, previousSelectedPaths) {
+											application.updateProperties();
+										}
+										]]>
+									</treeViewSelectionListeners-->
+						</TreeView>
+					</ScrollPane>
+				</Border>
+			</left>
+			<right>
+				<CardPane bxml:id="propertiesCardPane2">
+					<SplitPane orientation="vertical" splitRatio="0.2">
+						<top>
+							<Border styles="{color:10}">
+								<ScrollPane horizontalScrollBarPolicy="fill" verticalScrollBarPolicy="fill_to_capacity">
+									<TableView bxml:id="namespacesTableView2" selectMode="none">
+										<columns>
+											<TableView.Column name="prefix" width="1*" headerData="Prefix"/>
+											<TableView.Column name="uri" width="2*" headerData="URI"/>
+										</columns>
+									</TableView>
+									<columnHeader>
+										<TableViewHeader tableView="$namespacesTableView2" styles="{headersPressable:false}"/>
+									</columnHeader>
+								</ScrollPane>
+							</Border>
+						</top>
+						<bottom>
+							<Border styles="{color:10}">
+								<ScrollPane horizontalScrollBarPolicy="fill" verticalScrollBarPolicy="fill_to_capacity">
+									<TableView bxml:id="attributesTableView2" selectMode="none">
+										<columns>
+											<TableView.Column name="name" width="1*" headerData="Name"/>
+											<TableView.Column name="value" width="1*" headerData="Value"/>
+										</columns>
+									</TableView>
+									<columnHeader>
+										<TableViewHeader tableView="$attributesTableView2" styles="{headersPressable:false}"/>
+									</columnHeader>
+								</ScrollPane>
+							</Border>
+						</bottom>
+					</SplitPane>
+					<Border styles="{color:10}">
+						<ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+							<TextArea bxml:id="textArea2" editable="false" styles="{wrapText:false}"/>
+						</ScrollPane>
+					</Border>
+				</CardPane>
+			</right>
+		</SplitPane>
 	</TabPane>
 </Window>
