@@ -8,7 +8,16 @@
 			<TablePane.Column width="1*"/>
 		</columns>
 		<TablePane.Row height="1*">
-			<Label text="This is a dialog."	preferredWidth="320" preferredHeight="210" styles="{horizontalAlignment:'center', verticalAlignment:'center'}"/>
+			<Form>
+				<Form.Section>
+					<BoxPane Form.label="%formIdLabel">
+						<Label bxml:id="formId" textKey="id" />
+					</BoxPane>
+					<BoxPane Form.label="%formNameLabel" >
+						<TextInput bxml:id="formName" textKey="name" />
+					</BoxPane>
+				</Form.Section>
+			</Form>
 		</TablePane.Row>
 		<TablePane.Row height="-1">
 			<BoxPane styles="{horizontalAlignment:'right'}">

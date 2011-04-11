@@ -56,7 +56,7 @@ public class DesignerApp implements Application {
 
 	public static final String LANGUAGE_KEY = "language";
 	public static final String APPLICATION_KEY = "application";
-
+	
 	@BXML
 	private TreeView formTree;
 

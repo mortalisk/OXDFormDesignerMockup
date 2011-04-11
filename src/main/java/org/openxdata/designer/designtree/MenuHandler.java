@@ -1,6 +1,7 @@
 package org.openxdata.designer.designtree;
 
 import org.apache.pivot.beans.BXML;
+import org.apache.pivot.beans.BeanAdapter;
 import org.apache.pivot.collections.List;
 import org.apache.pivot.collections.Sequence.Tree.Path;
 import org.apache.pivot.wtk.Action;
@@ -75,6 +76,7 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 				propertiesItem.setAction(new Action() {
 					@Override
 					public void perform(Component source) {
+						formDialog.load(new BeanAdapter(form));
 						formDialog.open(designTree.getDisplay(),
 								designTree.getWindow());
 					}
@@ -108,6 +110,7 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 				propertiesItem.setAction(new Action() {
 					@Override
 					public void perform(Component source) {
+						pageDialog.load(new BeanAdapter(page));
 						pageDialog.open(designTree.getDisplay(),
 								designTree.getWindow());
 					}
@@ -134,6 +137,7 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 				propertiesItem.setAction(new Action() {
 					@Override
 					public void perform(Component source) {
+						questionDialog.load(new BeanAdapter(question));
 						questionDialog.open(designTree.getDisplay(),
 								designTree.getWindow());
 					}

@@ -2,13 +2,46 @@
 <Dialog bxml:id="questionDialog" title="%questionDialogTitle"
 	xmlns:bxml="http://pivot.apache.org/bxml"
 	xmlns:content="org.apache.pivot.wtk.content"
+	xmlns:collections="org.apache.pivot.collections"
+	xmlns:designtree="org.openxdata.designer.designtree"
 	xmlns="org.apache.pivot.wtk">
-	<TablePane preferredWidth="320" preferredHeight="210">
+	
+	<TablePane>
 		<columns>
 			<TablePane.Column width="1*"/>
 		</columns>
 		<TablePane.Row height="1*">
-			<Label text="This is a dialog."	preferredWidth="320" preferredHeight="210" styles="{horizontalAlignment:'center', verticalAlignment:'center'}"/>
+			<Form>
+				<Form.Section>
+					<BoxPane Form.label="%questionIdLabel">
+						<Label bxml:id="questionId" textKey="id" />
+					</BoxPane>
+					<BoxPane Form.label="%questionTextLabel">
+						<TextInput bxml:id="questionText" textKey="text" />
+					</BoxPane>
+					<BoxPane Form.label="%questionHelpTextLabel">
+						<TextInput bxml:id="questionHelpText" textKey="helpText" />
+					</BoxPane>
+					<BoxPane Form.label="%questionVariableNameLabel">
+						<TextInput bxml:id="questionVariableNameText" textKey="variableName" />
+					</BoxPane>
+					<BoxPane Form.label="%questionVisibleLabel">
+						<Checkbox bxml:id="questionVisible" selectedKey="visible" />
+					</BoxPane>
+					<BoxPane Form.label="%questionEnabledLabel">
+						<Checkbox bxml:id="questionEnabled" selectedKey="enabled" />
+					</BoxPane>
+					<BoxPane Form.label="%questionLockedLabel">
+						<Checkbox bxml:id="questionLocked" selectedKey="locked" />
+					</BoxPane>
+					<BoxPane Form.label="%questionRequiredLabel">
+						<Checkbox bxml:id="questionRequired" selectedKey="mandatory" />
+					</BoxPane>
+					<BoxPane Form.label="%questionDefaultValueLabel">
+						<TextInput bxml:id="questionDefaultValue" textKey="defaultValue" />
+					</BoxPane>
+				</Form.Section>
+			</Form>
 		</TablePane.Row>
 		<TablePane.Row height="-1">
 			<BoxPane styles="{horizontalAlignment:'right'}">
