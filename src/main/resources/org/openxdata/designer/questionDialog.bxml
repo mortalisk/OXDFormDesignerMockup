@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dialog bxml:id="questionDialog" title="%questionDialogTitle"
+	xmlns:bxml="http://pivot.apache.org/bxml"
+	xmlns:content="org.apache.pivot.wtk.content"
+	xmlns="org.apache.pivot.wtk">
+	<TablePane preferredWidth="320" preferredHeight="210">
+		<columns>
+			<TablePane.Column width="1*"/>
+		</columns>
+		<TablePane.Row height="1*">
+			<Label text="This is a dialog."	preferredWidth="320" preferredHeight="210" styles="{horizontalAlignment:'center', verticalAlignment:'center'}"/>
+		</TablePane.Row>
+		<TablePane.Row height="-1">
+			<BoxPane styles="{horizontalAlignment:'right'}">
+				<PushButton buttonData="Close" ButtonPressListener.buttonPressed="questionDialog.close()"/>
+			</BoxPane>
+		</TablePane.Row>
+	</TablePane>
+</Dialog>

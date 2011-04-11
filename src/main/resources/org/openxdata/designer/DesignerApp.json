@@ -9,4 +9,7 @@
 	reportsHeading: "Reports",
 	xformTab: "XForm",
 	designTab: "Design",
+	formDialogTitle: "Form Properties",
+	pageDialogTitle: "Page Properties",
+	questionDialogTitle: "Question Properties",
 }

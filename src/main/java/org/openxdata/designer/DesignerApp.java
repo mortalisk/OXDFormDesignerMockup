@@ -29,6 +29,7 @@ import org.apache.pivot.wtk.DropAction;
 import org.apache.pivot.wtk.HorizontalAlignment;
 import org.apache.pivot.wtk.Label;
 import org.apache.pivot.wtk.Manifest;
+import org.apache.pivot.wtk.MenuHandler;
 import org.apache.pivot.wtk.Prompt;
 import org.apache.pivot.wtk.TableView;
 import org.apache.pivot.wtk.TextArea;
@@ -79,6 +80,7 @@ public class DesignerApp implements Application {
 	private OverlayDecorator promptDecorator = new OverlayDecorator();
 
 	private Locale locale;
+
 	private Resources resources;
 
 	public void startup(Display display, Map<String, String> properties)
@@ -116,6 +118,11 @@ public class DesignerApp implements Application {
 
 		// Apply the binding annotations to this object
 		bxmlSerializer.bind(this);
+
+		// Apply the binding annotations to the menu handler
+		MenuHandler designMenuHandler = designTree.getMenuHandler();
+		if (designMenuHandler != null)
+			bxmlSerializer.bind(designMenuHandler);
 
 		Label prompt = new Label("Drag or paste XML here");
 		prompt.getStyles().put("horizontalAlignment",

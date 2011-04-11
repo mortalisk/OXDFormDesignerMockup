@@ -1,9 +1,11 @@
 package org.openxdata.designer.designtree;
 
+import org.apache.pivot.beans.BXML;
 import org.apache.pivot.collections.List;
 import org.apache.pivot.collections.Sequence.Tree.Path;
 import org.apache.pivot.wtk.Action;
 import org.apache.pivot.wtk.Component;
+import org.apache.pivot.wtk.Dialog;
 import org.apache.pivot.wtk.Menu;
 import org.apache.pivot.wtk.Menu.Section;
 import org.apache.pivot.wtk.MenuBar;
@@ -14,6 +16,15 @@ import org.openxdata.designer.util.Question;
 
 public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 
+	@BXML
+	private Dialog formDialog;
+
+	@BXML
+	private Dialog pageDialog;
+
+	@BXML
+	private Dialog questionDialog;
+
 	public void configureMenuBar(Component component, MenuBar menuBar) {
 	}
 
@@ -23,7 +34,7 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 	public boolean configureContextMenu(Component component, Menu menu, int x,
 			int y) {
 
-		TreeView designTree = (TreeView) component;
+		final TreeView designTree = (TreeView) component;
 		Path clickedPath = designTree.getNodeAt(y);
 		List<?> treeData = designTree.getTreeData();
 
@@ -61,6 +72,14 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 					}
 				});
 
+				propertiesItem.setAction(new Action() {
+					@Override
+					public void perform(Component source) {
+						formDialog.open(designTree.getDisplay(),
+								designTree.getWindow());
+					}
+				});
+
 				section.add(newPageItem);
 				section.add(propertiesItem);
 			} else if (clickedObject instanceof Page) {
@@ -86,6 +105,14 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 					}
 				});
 
+				propertiesItem.setAction(new Action() {
+					@Override
+					public void perform(Component source) {
+						pageDialog.open(designTree.getDisplay(),
+								designTree.getWindow());
+					}
+				});
+
 				section.add(newQuestionItem);
 				section.add(removePageItem);
 				section.add(propertiesItem);
@@ -101,6 +128,14 @@ public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 				removeQuestionItem.setAction(new Action() {
 					public void perform(Component source) {
 						questionList.remove(question);
+					}
+				});
+
+				propertiesItem.setAction(new Action() {
+					@Override
+					public void perform(Component source) {
+						questionDialog.open(designTree.getDisplay(),
+								designTree.getWindow());
 					}
 				});
 
