@@ -59,22 +59,22 @@ public class DesignerApp implements Application {
 	public static final String APPLICATION_KEY = "application";
 	
 	@BXML
-	private TreeView formTree;
+	public TreeView formTree;
 
 	@BXML
-	private TreeView designTree;
+	public TreeView designTree;
 
 	@BXML
-	private CardPane propertiesCardPane;
+	public CardPane propertiesCardPane;
 
 	@BXML
-	private TableView namespacesTableView;
+	public TableView namespacesTableView;
 
 	@BXML
-	private TableView attributesTableView;
+	public TableView attributesTableView;
 
 	@BXML
-	private TextArea textArea;
+	public TextArea textArea;
 
 	private Window window;
 

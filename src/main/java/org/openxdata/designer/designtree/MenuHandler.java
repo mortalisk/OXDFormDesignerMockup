@@ -18,13 +18,13 @@ import org.openxdata.designer.util.Question;
 public class MenuHandler implements org.apache.pivot.wtk.MenuHandler {
 
 	@BXML
-	private Dialog formDialog;
+	public Dialog formDialog;
 
 	@BXML
-	private Dialog pageDialog;
+	public Dialog pageDialog;
 
 	@BXML
-	private Dialog questionDialog;
+	public Dialog questionDialog;
 
 	public void configureMenuBar(Component component, MenuBar menuBar) {
 	}
