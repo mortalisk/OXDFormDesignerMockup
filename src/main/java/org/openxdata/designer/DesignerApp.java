@@ -24,6 +24,7 @@ import org.apache.pivot.util.Resources;
 import org.apache.pivot.wtk.Application;
 import org.apache.pivot.wtk.CardPane;
 import org.apache.pivot.wtk.Clipboard;
+import org.apache.pivot.wtk.DesktopApplicationContext;
 import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.DropAction;
 import org.apache.pivot.wtk.HorizontalAlignment;
@@ -299,4 +300,8 @@ public class DesignerApp implements Application {
 	public void resume() throws Exception {
 		// TODO Auto-generated method stub
 	}
+
+        public static void main(String[] args) {
+            DesktopApplicationContext.main(DesignerApp.class, args);
+        }
 }
