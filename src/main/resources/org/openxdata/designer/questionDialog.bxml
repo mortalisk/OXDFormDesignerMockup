@@ -6,6 +6,10 @@
 	xmlns:designtree="org.openxdata.designer.designtree"
 	xmlns="org.apache.pivot.wtk">
 	
+	<bxml:define>
+		<designtree:QuestionTypeMapping bxml:id="questionTypeMapping" />
+	</bxml:define>
+	
 	<TablePane>
 		<columns>
 			<TablePane.Column width="1*"/>
@@ -21,6 +25,10 @@
 					</BoxPane>
 					<BoxPane Form.label="%questionHelpTextLabel">
 						<TextInput bxml:id="questionHelpText" textKey="helpText" />
+					</BoxPane>
+					<BoxPane Form.label="%questionTypeLabel">
+						<ListButton bxml:id="questionType" selectedItemKey="type" listData="$questionTypeMapping.valueNames"
+							selectedItemBindMapping="$questionTypeMapping" /> 
 					</BoxPane>
 					<BoxPane Form.label="%questionVariableNameLabel">
 						<TextInput bxml:id="questionVariableNameText" textKey="variableName" />
